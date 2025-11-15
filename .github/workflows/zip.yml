@@ -1,40 +1,32 @@
-name: Build ZIPs
+name: Zip Folders
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build-zip:
+  zip:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Create zip folder
-        run: mkdir -p zip
-
-      - name: Zip folder contents (NOT the folder itself)
+      - name: Zip each top-level folder
         run: |
-          for dir in */ ; do
-            folder_name=$(basename "$dir")
+          for d in */ ; do
+            folder="${d%/}"
+            echo "Zipping contents of: $folder"
 
-            # Skip the zip folder itself
-            if [ "$folder_name" != "zip" ]; then
-              
-              echo "Zipping contents of $folder_name..."
+            mkdir -p zips
 
-              # Zip the *contents* of the folder, not the folder
-              cd "$folder_name"
-              zip -r "../zip/${folder_name}.zip" ./*
-              cd ..
-            fi
+            # Zip ONLY the contents, not the folder itself
+            (cd "$folder" && zip -r "../zips/$folder.zip" .)
           done
 
-      - name: Upload artifacts
+      - name: Upload zipped artifacts
         uses: actions/upload-artifact@v4
         with:
           name: zipped-folders
-          path: zip/*.zip
+          path: zips/*.zip
