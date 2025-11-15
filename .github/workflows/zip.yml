@@ -1,4 +1,4 @@
-name: Build and Release ZIP
+name: Build ZIPs
 
 on:
   push:
@@ -6,32 +6,22 @@ on:
       - main
 
 jobs:
-  build-and-release:
+  build-zip:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Zip repository
+      # 2. Create zip folder if it doesn't exist
+      - name: Create zip folder
+        run: mkdir -p zip
+
+      # 3. Zip each top-level folder into zip/
+      - name: Zip top-level folders
         run: |
-          zip -r project.zip . -x ".git/*"
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: release-${{ github.sha }}
-          release_name: Release ${{ github.sha }}
-          draft: false
-          prerelease: false
-          token: ${{ secrets.SECRET }}
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./project.zip
-          asset_name: project.zip
-          asset_content_type: application/zip
-          token: ${{ secrets.SECRET }}
+          for dir in */ ; do
+            folder_name=$(basename "$dir")
+            zip -r "zip/${folder_name}.zip" "$folder_name"
+          done
