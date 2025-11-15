@@ -19,14 +19,17 @@ jobs:
         run: mkdir -p zip
 
       # 3. Zip each top-level folder, excluding the zip folder itself
+      # 3. Zip each top-level folder, contents at root of zip
       - name: Zip top-level folders
         run: |
+          mkdir -p zip
           for dir in */ ; do
             folder_name=$(basename "$dir")
             if [ "$folder_name" != "zip" ]; then
-              zip -r "zip/${folder_name}.zip" "$folder_name"
+              (cd "$folder_name" && zip -r "../zip/${folder_name}.zip" .)
             fi
           done
+
 
       # 4. Upload each zip separately
       - name: Upload ZIPs individually
