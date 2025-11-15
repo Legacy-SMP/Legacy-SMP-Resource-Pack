@@ -10,16 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Zip files
       - name: Zip repository
         run: |
           zip -r project.zip . -x ".git/*"
 
-      # 3. Create GitHub release
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -30,7 +27,6 @@ jobs:
           prerelease: false
           token: ${{ secrets.SECRET }}
 
-      # 4. Upload zip to release
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
