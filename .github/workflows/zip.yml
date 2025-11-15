@@ -1,7 +1,7 @@
 name: Zip Folders
 
 on:
-  push:          # ← RUNS ON EVERY COMMIT
+  push:
     branches: ["**"]
   workflow_dispatch:
 
@@ -43,4 +43,4 @@ jobs:
               })
             }
           env:
-            FOLDERS: ${{ s
+            FOLDERS: ${{ steps.zipstep.outputs.folders }}
