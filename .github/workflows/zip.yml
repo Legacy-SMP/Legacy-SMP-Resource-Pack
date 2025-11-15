@@ -28,9 +28,14 @@ jobs:
             fi
           done
 
-      # 4. Upload zips as build artifacts
-      - name: Upload ZIPs
+      # 4. Upload each zip separately
+      - name: Upload ZIPs individually
         uses: actions/upload-artifact@v4
         with:
-          name: zipped-folders
-          path: zip/
+          name: java-zip
+          path: zip/java.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bedrock-zip
+          path: zip/bedrock.zip
