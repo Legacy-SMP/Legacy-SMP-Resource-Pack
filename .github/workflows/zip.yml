@@ -10,32 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Create zip folder
       - name: Create zip folder
         run: mkdir -p zip
 
-      # 3. Zip each top-level folder individually
-      - name: Zip top-level folders
+      - name: Zip folder contents (NOT the folder itself)
         run: |
           for dir in */ ; do
             folder_name=$(basename "$dir")
+
+            # Skip the zip folder itself
             if [ "$folder_name" != "zip" ]; then
-              # Go into the folder and zip its contents only
-              (cd "$folder_name" && zip -r "../zip/${folder_name}.zip" .)
+              
+              echo "Zipping contents of $folder_name..."
+
+              # Zip the *contents* of the folder, not the folder
+              cd "$folder_name"
+              zip -r "../zip/${folder_name}.zip" ./*
+              cd ..
             fi
           done
 
-      # 4. Upload each zip as a separate artifact
-      - name: Upload ZIPs
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: java
-          path: zip/java.zip
-      - uses: actions/upload-artifact@v4
-        with:
-          name: bedrock
-          path: zip/bedrock.zip
+          name: zipped-folders
+          path: zip/*.zip
