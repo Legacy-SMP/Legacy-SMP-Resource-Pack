@@ -1,48 +1,35 @@
-name: Release Zips
+name: Auto-Zip and Release
 
 on:
   push:
-    branches: ["main"]   # run when committing to main
-  workflow_dispatch:      # allow manual run
+    branches:
+      - main
 
 permissions:
   contents: write
 
-
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Zip folders
+      - name: Zip top-level folders
         run: |
-          mkdir release-files
-          for dir in */ ; do
-            folder="${dir%/}"
-            echo "Zipping $folder"
-            (cd "$folder" && zip -r "../release-files/$folder.zip" .)
+          mkdir zips
+          for folder in */ ; do
+            name=$(basename "$folder")
+            zip -r "zips/$name.zip" "$folder"
           done
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: "build-${{ github.sha }}"
-          release_name: "Build ${{ github.sha }}"
-          draft: false
-          prerelease: false
+      - name: Show zipped files
+        run: ls -R zips
 
-      - name: Upload zip files to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "./release-files"
-          asset_name: "folder-zips"
-          asset_content_type: "application/zip"
+          tag_name: build-${{ github.run_number }}
+          name: Automated Build ${{ github.run_number }}
+          files: zips/*.zip
