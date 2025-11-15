@@ -28,7 +28,7 @@ jobs:
           release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SECRET }}
 
       # 4. Upload zip to release
       - name: Upload Release Asset
