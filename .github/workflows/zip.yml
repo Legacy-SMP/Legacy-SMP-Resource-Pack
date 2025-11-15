@@ -16,13 +16,21 @@ jobs:
 
       - id: list
         run: |
-          folders=$(ls -d */ | sed 's#/##')
+          # List folders (no trailing slash)
+          folders=$(ls -d */ 2>/dev/null | sed 's:/$::')
+
+          # Convert to JSON array
           json=$(printf '%s\n' $folders | jq -R . | jq -s .)
+
+          # Write JSON array in ONE LINE to GITHUB_OUTPUT
           echo "folders=$json" >> $GITHUB_OUTPUT
+
+          echo "Detected folders: $json"
 
   zip:
     needs: detect-folders
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         folder: ${{ fromJson(needs.detect-folders.outputs.folders) }}
