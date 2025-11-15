@@ -18,27 +18,19 @@ jobs:
       - name: Create zip folder
         run: mkdir -p zip
 
-      # 3. Zip each top-level folder, excluding the zip folder itself
+      # 3. Zip each top-level folder separately, excluding the zip folder itself
       - name: Zip top-level folders
         run: |
-          mkdir -p zip
           for dir in */ ; do
             folder_name=$(basename "$dir")
             if [ "$folder_name" != "zip" ]; then
-              # go into the folder and zip all contents into ../zip folder
-              (cd "$folder_name" && zip -r "../zip/${folder_name}.zip" .)
+              zip -r "zip/${folder_name}.zip" "$folder_name" -x "zip/*"
             fi
           done
 
-
-      # 4. Upload each zip separately
-      - name: Upload ZIPs individually
+      # 4. Upload zips as artifacts (downloadable)
+      - name: Upload ZIPs
         uses: actions/upload-artifact@v4
         with:
-          name: java-zip
-          path: zip/java.zip
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: bedrock-zip
-          path: zip/bedrock.zip
+          name: zipped-folders
+          path: zip/
