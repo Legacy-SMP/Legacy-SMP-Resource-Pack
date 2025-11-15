@@ -5,6 +5,10 @@ on:
     branches: ["main"]   # run when committing to main
   workflow_dispatch:      # allow manual run
 
+permissions:
+  contents: write
+
+
 jobs:
   release:
     runs-on: ubuntu-latest
