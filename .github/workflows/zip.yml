@@ -1,40 +1,39 @@
 name: Zip Folders
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  zip:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      folders: ${{ steps.get-folders.outputs.list }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Zip each top-level folder
+      - id: get-folders
         run: |
-          mkdir -p zips
-          for d in */ ; do
-            folder="${d%/}"               # remove trailing slash
-            echo "Zipping contents of: $folder"
+          folders=$(ls -d */ | sed 's#/##' | jq -R . | jq -s .)
+          echo "list=$folders" >> $GITHUB_OUTPUT
 
-            # zip ONLY the contents of the folder
-            (cd "$folder" && zip -r "../zips/$folder.zip" .)
-          done
+  zip:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: ${{ fromJson(needs.prepare.outputs.folders) }}
 
-      - name: Upload each zip separately
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Zip folder contents
         run: |
-          for f in zips/*.zip; do
-            name=$(basename "$f" .zip)
-            echo "Uploading artifact: $name"
-            gh workflow run # ignore
-          done
+          cd "${{ matrix.folder }}"
+          zip -r "../${{ matrix.folder }}.zip" .
 
-        shell: bash
-
-      - name: Upload artifacts
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: zips/*.zip
+          name: ${{ matrix.folder }}
+          path: ${{ matrix.folder }}.zip
