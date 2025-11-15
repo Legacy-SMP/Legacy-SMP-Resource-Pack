@@ -30,7 +30,7 @@ jobs:
 
       # 4. Upload zips as build artifacts
       - name: Upload ZIPs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: zipped-folders
           path: zip/
