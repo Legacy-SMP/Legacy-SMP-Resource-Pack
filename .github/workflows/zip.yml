@@ -16,14 +16,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Zip top-level folders (excluding zips/)
+      - name: Zip top-level folder contents
         run: |
           mkdir -p zips
           for folder in */ ; do
             name=$(basename "$folder")
             if [ "$name" != "zips" ]; then
-              echo "Zipping $name"
-              zip -r "zips/$name.zip" "$folder"
+              echo "Zipping contents of $name"
+              ( cd "$folder" && zip -r "../zips/$name.zip" . )
             fi
           done
 
