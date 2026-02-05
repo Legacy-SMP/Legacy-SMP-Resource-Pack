@@ -1,0 +1,25 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "entries": [
+      {
+        "threshold": 20045,
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/titan-use"
+        }
+      }
+    ],
+    "index": 0,
+    "fallback": {
+      "type": "minecraft:composite",
+      "models": [
+        {
+          "type": "minecraft:model",
+          "model": "minecraft:item/carrot_on_a_stick"
+        }
+      ]
+    }
+  }
+}

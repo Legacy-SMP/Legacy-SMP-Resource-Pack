@@ -1,0 +1,63 @@
+{
+    "model": {
+      "type": "minecraft:range_dispatch",
+      "property": "minecraft:custom_model_data",
+      "entries": [
+        {
+          "threshold": 9955,
+          "model": {
+            "type": "minecraft:model",
+            "model": "item/empty"
+          }
+        },
+        {
+          "threshold": 9980,
+          "model": {
+            "type": "minecraft:model",
+            "model": "item/titan-storage"
+          }
+        },
+        {
+          "threshold": 9981,
+          "model": {
+            "type": "minecraft:model",
+            "model": "item/titan-inventory"
+          }
+        },
+        {
+          "threshold": 9982,
+          "model": {
+            "type": "minecraft:model",
+            "model": "item/empty-armor"
+          }
+        },
+        {
+          "threshold": 9983,
+          "model": {
+            "type": "minecraft:model",
+            "model": "item/crown_item"
+          }
+        },
+        {
+          "threshold": 9984,
+          "model": {
+            "type": "minecraft:model",
+            "model": "item/harden_item"
+          }
+        },
+        {
+          "threshold": 9985,
+          "model": {
+            "type": "minecraft:model",
+            "model": "item/titan-storage-harden"
+          }
+        }
+      ],
+      "index": 0,
+      "fallback": {
+        "type": "minecraft:model",
+        "model": "minecraft:item/barrier"
+      }
+    }
+  }
+  
