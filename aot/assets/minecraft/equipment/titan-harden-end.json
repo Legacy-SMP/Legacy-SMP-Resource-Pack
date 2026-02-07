@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "minecraft:titan-hardene-top"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "minecraft:titan-hardene-bottom"
+      }
+    ]
+  }
+}

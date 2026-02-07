@@ -1,0 +1,16 @@
+{
+    "variants": {
+      "type=bottom": {
+        "model": "minecraft:block/oak_slab"
+      },
+      "type=double,waterlogged=false": {
+        "model": "minecraft:block/titan_harden"
+      },
+      "type=top": {
+        "model": "minecraft:block/oak_slab_top"
+      },
+      "type=double,waterlogged=true": {
+        "model": "minecraft:block/oak_planks"
+      }
+    }
+  }
