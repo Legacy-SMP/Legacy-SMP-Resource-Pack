@@ -1,13 +1,4 @@
 {
-    "death.attack.aot-bite": "%1$s bit themself too hard",
     "block.minecraft.poppy":"Rose",
-    "block.minecraft.potted_poppy":"Potted Rose",
-    "death.attack.aot-bite.player": "%1$s bit themself too hard",
-    "death.attack.aot-nape": "%1$s had their nape destroyed",
-    "death.attack.aot-nape.player": "%1$s had their name destroyed by %2$s",
-    "death.attack.aot-serum": "%1$s died due to complications from an unknown substance",
-    "death.attack.aot-serum.player": "%1$s died due to complications from an unknown substance",
-    "death.attack.aot-harm": "%1$s went too far",
-    "death.attack.aot-harm.player": "%1$s got themself killed",
-    "effect.minecraft.unluck": "Transforming"
+    "block.minecraft.potted_poppy":"Potted Rose"
 }
